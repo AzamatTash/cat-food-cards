@@ -47,11 +47,42 @@ const CardsSelect = () => {
             description: 'Филе из цыплят с трюфелями в бульоне.',
         },
     ];
+    const [selectedBlocks, setSelectedBlocks] = React.useState([]);
+    const [hoverBlock, setHoverBlock] = React.useState(null);
+
+    const handleCardClick = (id) => {
+        if (selectedBlocks.includes(id)) {
+            setSelectedBlocks((prevSelectedBlocks) =>
+                prevSelectedBlocks.filter((blockId) => blockId !== id)
+            );
+        } else {
+            setSelectedBlocks((prevSelectedBlocks) => [
+                ...prevSelectedBlocks,
+                id,
+            ]);
+        }
+    };
+
+    const handleCardMouseEnter = () => {
+        setHoverBlock(null);
+    };
+
+    const handleCardMouseLeave = (id) => {
+        setHoverBlock(id);
+    };
 
     return (
         <div className={classes.container}>
             {productsList.map((product) => (
-                <Card key={product.id} {...product} />
+                <Card
+                    key={product.id}
+                    {...product}
+                    handleCardClick={handleCardClick}
+                    handleCardMouseEnter={handleCardMouseEnter}
+                    handleCardMouseLeave={handleCardMouseLeave}
+                    selected={selectedBlocks.includes(product.id)}
+                    hoverBlock={hoverBlock}
+                />
             ))}
         </div>
     );

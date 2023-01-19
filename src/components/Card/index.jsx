@@ -2,7 +2,19 @@ import React from 'react';
 import classes from './card.module.sass';
 import cat from '../../image/photo-cat.png';
 
-const Card = ({ title, composition, weight, measureUnit, description }) => {
+const Card = ({
+    id,
+    title,
+    composition,
+    weight,
+    measureUnit,
+    description,
+    selected,
+    handleCardClick,
+    handleCardMouseEnter,
+    handleCardMouseLeave,
+    hoverBlock,
+}) => {
     const getStr = (quantity) => {
         if (quantity === 1) {
             return 'мышь';
@@ -14,25 +26,26 @@ const Card = ({ title, composition, weight, measureUnit, description }) => {
             return 'мышей';
         }
     };
-    const [select, setSelect] = React.useState(false);
-
-    const onSelectProduct = () => {
-        // const product = {
-        //     id,
-        //     title,
-        // };
-        setSelect(!select);
-    };
 
     return (
         <div className={classes.container}>
             <div
-                className={select ? classes.cardSelected : classes.card}
-                onClick={onSelectProduct}
+                className={
+                    selected || hoverBlock === id
+                        ? classes.cardSelected
+                        : classes.card
+                }
+                onClick={() => handleCardClick(id)}
+                onMouseEnter={handleCardMouseEnter}
+                onMouseLeave={() => handleCardMouseLeave(id)}
             >
                 <div className={classes.mainInfo}>
                     <h3 className={classes.upTitle}>
-                        Сказачное заморское яство
+                        {hoverBlock === id && !selected ? (
+                            <span>Котэ не одобряет?</span>
+                        ) : (
+                            'Сказачное заморское яство'
+                        )}
                     </h3>
                     <h1 className={classes.title}>Нямушка</h1>
                     <h2 className={classes.subTitle}>{title}</h2>
@@ -61,12 +74,12 @@ const Card = ({ title, composition, weight, measureUnit, description }) => {
                 <img className={classes.imgBg} src={cat} alt='cat-image' />
             </div>
             <p className={classes.description}>
-                {select ? (
+                {selected ? (
                     description
                 ) : (
                     <>
                         <div>Чего сидишь? Порадуй котэ, </div>
-                        <span onClick={() => setSelect(!select)}>купи</span>.
+                        <span onClick={() => handleCardClick(id)}>купи</span>.
                     </>
                 )}
             </p>
