@@ -1,5 +1,6 @@
 import React from 'react';
 import classes from './card.module.sass';
+import { getStr } from '../../utils/getStr';
 import cat from '../../image/photo-cat.png';
 
 const Card = ({
@@ -9,39 +10,28 @@ const Card = ({
     weight,
     measureUnit,
     description,
+    inStock,
     selected,
     handleCardClick,
     handleCardMouseEnter,
     handleCardMouseLeave,
-    hoverBlock,
+    hoverCard,
 }) => {
-    const getStr = (quantity) => {
-        if (quantity === 1) {
-            return 'мышь';
-        }
-        if (quantity < 5) {
-            return 'мыши';
-        }
-        if (quantity > 4) {
-            return 'мышей';
-        }
-    };
+    const classNameDefault =
+        selected || hoverCard === id ? classes.cardSelected : classes.card;
+    const classNameDisable = classes.cardDisable;
 
     return (
         <div className={classes.container}>
             <div
-                className={
-                    selected || hoverBlock === id
-                        ? classes.cardSelected
-                        : classes.card
-                }
+                className={inStock ? classNameDefault : classNameDisable}
                 onClick={() => handleCardClick(id)}
                 onMouseEnter={handleCardMouseEnter}
                 onMouseLeave={() => handleCardMouseLeave(id)}
             >
                 <div className={classes.mainInfo}>
                     <h3 className={classes.upTitle}>
-                        {hoverBlock === id && !selected ? (
+                        {hoverCard === id && !selected ? (
                             <span>Котэ не одобряет?</span>
                         ) : (
                             'Сказачное заморское яство'
@@ -74,13 +64,22 @@ const Card = ({
                 <img className={classes.imgBg} src={cat} alt='cat-image' />
             </div>
             <p className={classes.description}>
-                {selected ? (
-                    description
+                {inStock ? (
+                    selected ? (
+                        description
+                    ) : (
+                        <>
+                            <div>Чего сидишь? Порадуй котэ, </div>
+                            <span onClick={() => handleCardClick(id)}>
+                                купи
+                            </span>
+                            .
+                        </>
+                    )
                 ) : (
-                    <>
-                        <div>Чего сидишь? Порадуй котэ, </div>
-                        <span onClick={() => handleCardClick(id)}>купи</span>.
-                    </>
+                    <div style={{ color: '#FFFF66' }}>
+                        Печалька, {title} закончился.
+                    </div>
                 )}
             </p>
         </div>

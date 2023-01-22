@@ -22,7 +22,8 @@
 
 
   .card,
-  .cardSelected
+  .cardSelected,
+  .cardDisable
     display: block
     width: 320px
     height: 480px
@@ -43,6 +44,7 @@
       position: absolute
       top: -49px
       left: -59px
+      z-index: 3
       width: 88px
       height: 88px
       transform: rotate(45deg)
@@ -123,6 +125,21 @@
 
   .cardSelected
     border-color: #D91667
+
+  .cardDisable
+    pointer-events: none
+    border-color: #B3B3B3
+
+    &::before
+      position: absolute
+      content: ''
+      top: 0
+      left: 0
+      z-index: 3
+      width: 320px
+      height: 480px
+      background-color: #F2F2F2
+      opacity: 0.8
 
   .description
     font-size: 13px
